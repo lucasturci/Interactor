@@ -32,13 +32,14 @@ int main(int argc, char * argv[]) {
 		exit(1);
 	}
 
+	cout << KGRN << "Running..." << endl << KNRM;
+
 	/* Fork processes */
 	if ( (judge = fork()) == -1 ) {
 		perror("in forking");
 		exit(1);
 	}
 
-	cout << KGRN << "Running..." << endl << KNRM;
 
 	/* Close stdin and stdout, to be replaced by the sockets */
 	close(0); // close stdin
@@ -58,7 +59,6 @@ int main(int argc, char * argv[]) {
 		// Transforms sockets[1] into stdin and stdout
 		dup(sockets[1]);
 		dup(sockets[1]);
-
 
 		string prog_name = "./" + string(argv[1]);
 		execl(prog_name.c_str(), prog_name.c_str(), NULL);
