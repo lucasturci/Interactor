@@ -56,8 +56,8 @@ int main() {
 		} else {
 			// If got it right, print and terminate program
 			if(seq[guess] == seq[pos]) {
-				cout << seq[guess] << '\n';
-				cout << "SUCCESS" << endl;
+				cout << seq[guess] << endl;
+				cerr << "SUCCESS" << endl;
 				break;
 			}
 			cout << seq[guess] << endl;
