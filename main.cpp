@@ -4,6 +4,7 @@
 #include <iostream>
 #include <sys/types.h>
 #include <sys/socket.h>
+#include <map>
 
 #define KRED  "\x1B[31m"
 #define KGRN  "\x1B[32m"
@@ -153,7 +154,46 @@ void verbose(char * sol_prog, char * jud_prog) {
 }
 
 void normal(char * sol_prog, char * jud_prog) {
-	
+	/* Creates sockets */
+	int sockets[2], judge;
+
+	if( socketpair(AF_UNIX, SOCK_STREAM, 0, sockets) < 0 ) {
+		perror("opening stream socket pair");
+		exit(1);
+	}
+
+	cout << KRED << "Watch out! If judge program is not terminated, the process will be hanging in the background" << KNRM << endl;
+	cout << KGRN << "Running..." << KNRM << endl;
+
+	/* Fork processes */
+	if ( (judge = fork()) == -1 ) {
+		perror("in forking");
+		exit(1);
+	}
+
+
+	/* Close stdin and stdout, to be replaced by the sockets */
+	close(0); // close stdin
+	close(1); // close stdout
+		
+	if(judge) { // is judge
+
+		// Transforms sockets[0] into stdin and stdout
+		dup(sockets[0]);
+		dup(sockets[0]);
+
+
+		string prog_name = "./" + string(jud_prog);
+		execl(prog_name.c_str(), prog_name.c_str(), NULL);
+	} else { // is solution
+
+		// Transforms sockets[1] into stdin and stdout
+		dup(sockets[1]);
+		dup(sockets[1]);
+
+		string prog_name = "./" + string(sol_prog);
+		execl(prog_name.c_str(), prog_name.c_str(), NULL);
+	}
 }
 
 
@@ -163,7 +203,7 @@ int main(int argc, char * argv[]) {
 	flags["verbose"] = false;
 	
 	for(int i = 0; i < argc; ++i) {
-		if(is_flag(string)) { // is_flag will activate flag
+		if(is_flag(argv[i])) { // is_flag will activate flag
 			// shift everything ahead one space to the left and process this index again
 			for(int j = i + 1; j < argc; j++) argv[j-1] = argv[j];
 			i--;
