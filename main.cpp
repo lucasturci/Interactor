@@ -68,9 +68,11 @@ void verbose(char * sol_prog, char * jud_prog) {
 
 	if (socketpair(AF_UNIX, SOCK_STREAM, 0, jud_sock) < 0) {
 		perror("in creating judge sockets");
+		exit(1);
 	}
 	if (socketpair(AF_UNIX, SOCK_STREAM, 0, sol_sock) < 0) {
 		perror("in creating solution sockets");
+		exit(1);
 	}
 
 	int super;
@@ -139,7 +141,10 @@ void verbose(char * sol_prog, char * jud_prog) {
 
 
 			string prog_name = "./" + string(jud_prog);
-			execl(prog_name.c_str(), prog_name.c_str(), NULL);
+			if( execl(prog_name.c_str(), prog_name.c_str(), NULL) < 0 ) {
+				perror("In running judge program");
+				exit(1);
+			}
 		} else { // is solution
 
 			// Transforms sol_sock[1] into stdin and stdout
@@ -147,7 +152,10 @@ void verbose(char * sol_prog, char * jud_prog) {
 			dup(sol_sock[1]);
 
 			string prog_name = "./" + string(sol_prog);
-			execl(prog_name.c_str(), prog_name.c_str(), NULL);
+			if( execl(prog_name.c_str(), prog_name.c_str(), NULL) < 0 ) {
+				perror("In running solution program");
+				exit(1);
+			}
 		}
 	}
 
@@ -184,7 +192,10 @@ void normal(char * sol_prog, char * jud_prog) {
 
 
 		string prog_name = "./" + string(jud_prog);
-		execl(prog_name.c_str(), prog_name.c_str(), NULL);
+		if( execl(prog_name.c_str(), prog_name.c_str(), NULL) < 0 ) {
+			perror("In running judge program");
+			exit(1);
+		};
 	} else { // is solution
 
 		// Transforms sockets[1] into stdin and stdout
@@ -192,7 +203,10 @@ void normal(char * sol_prog, char * jud_prog) {
 		dup(sockets[1]);
 
 		string prog_name = "./" + string(sol_prog);
-		execl(prog_name.c_str(), prog_name.c_str(), NULL);
+		if( execl(prog_name.c_str(), prog_name.c_str(), NULL) < 0 ) {
+			perror("In running judge program");
+			exit(1);
+		};
 	}
 }
 
