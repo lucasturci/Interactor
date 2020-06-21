@@ -61,27 +61,7 @@ bool is_flag(char * s) {
 	return false;
 }
 
-
-int main(int argc, char * argv[]) {
-
-	flag_aliases["v"] = "verbose";
-	flags["verbose"] = false;
-	
-	for(int i = 0; i < argc; ++i) {
-		if(is_flag(string)) { // is_flag will activate flag
-			// shift everything ahead one space to the left and process this index again
-			for(int j = i + 1; j < argc; j++) argv[j-1] = argv[j];
-			i--;
-			argc--;
-		}
-	}
-
-	if(argc != 3) {
-		printf("%sUSAGE:%s%s <solution exec name> <judge exec name>\n", KRED, KNRM, argv[0]);
-		print_help();
-		exit(0);
-	}
-
+void verbose(char * sol_prog, char * jud_prog) {
 	/* Creates sockets */
 	int jud_sock[2], sol_sock[2];
 
@@ -157,7 +137,7 @@ int main(int argc, char * argv[]) {
 			dup(jud_sock[1]);
 
 
-			string prog_name = "./" + string(argv[2]);
+			string prog_name = "./" + string(jud_prog);
 			execl(prog_name.c_str(), prog_name.c_str(), NULL);
 		} else { // is solution
 
@@ -165,11 +145,39 @@ int main(int argc, char * argv[]) {
 			dup(sol_sock[1]);
 			dup(sol_sock[1]);
 
-			string prog_name = "./" + string(argv[1]);
+			string prog_name = "./" + string(sol_prog);
 			execl(prog_name.c_str(), prog_name.c_str(), NULL);
 		}
 	}
 
+}
 
+void normal(char * sol_prog, char * jud_prog) {
+	
+}
+
+
+int main(int argc, char * argv[]) {
+
+	flag_aliases["v"] = "verbose";
+	flags["verbose"] = false;
+	
+	for(int i = 0; i < argc; ++i) {
+		if(is_flag(string)) { // is_flag will activate flag
+			// shift everything ahead one space to the left and process this index again
+			for(int j = i + 1; j < argc; j++) argv[j-1] = argv[j];
+			i--;
+			argc--;
+		}
+	}
+
+	if(argc != 3) {
+		printf("%sUSAGE:%s%s <solution exec name> <judge exec name>\n", KRED, KNRM, argv[0]);
+		print_help();
+		exit(0);
+	}
+
+	if(flags["verbose"]) verbose(argv[1], argv[2]); // run verbose version of the program (debugging version)
+	else normal(argv[1], argv[2]);
 
 }
