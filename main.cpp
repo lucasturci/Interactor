@@ -32,8 +32,50 @@ int will_not_block(int fd) {
     return ret;
 }
 
+map<string, bool> flags;
+map<string, string> flag_aliases;
+
+bool is_flag(char * s) {
+	int cur = 0;
+	while(s[cur] != '\0' and s[cur] == '-') cur++;
+	if(cur >= 1 and cur <= 2) {
+		s = s + cur;
+		string str = s;
+
+		if(cur == 1) {
+			if(flag_aliases.count(str) == 0) {
+				cout << "Option " << str << " not recognized\n";
+				exit(0);
+			}
+			str = flag_aliases[str];
+		}
+
+		if(flags.count(str) == 0) {
+			cout << "Option " << str << " not recognized\n";
+			exit(0);
+		}
+
+		flags[str] = true;
+		return true;
+	}
+	return false;
+}
+
+
 int main(int argc, char * argv[]) {
+
+	flag_aliases["v"] = "verbose";
+	flags["verbose"] = false;
 	
+	for(int i = 0; i < argc; ++i) {
+		if(is_flag(string)) { // is_flag will activate flag
+			// shift everything ahead one space to the left and process this index again
+			for(int j = i + 1; j < argc; j++) argv[j-1] = argv[j];
+			i--;
+			argc--;
+		}
+	}
+
 	if(argc != 3) {
 		printf("%sUSAGE:%s%s <solution exec name> <judge exec name>\n", KRED, KNRM, argv[0]);
 		print_help();
