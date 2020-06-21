@@ -20,10 +20,10 @@ void print_help() {
 int will_not_block(int fd) {
 	fd_set rfds;
 	struct timeval tv;
-	tv.tv_sec = 1, tv.tv_usec = 0;
+	tv.tv_sec = 0, tv.tv_usec = 500000;
     FD_ZERO(&rfds);
     FD_SET(fd, &rfds);
-    int ret = select(1, &rfds, NULL, NULL, &tv);
+    int ret = select(fd + 1, &rfds, NULL, NULL, &tv);
 
     if(ret == -1) {
     	perror("in querying select");

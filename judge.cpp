@@ -63,5 +63,4 @@ int main() {
 			cout << seq[guess] << endl;
 		}
 	}
-	cout << "Closing JUDGE" << endl;
 }
