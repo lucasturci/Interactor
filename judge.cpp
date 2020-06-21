@@ -50,14 +50,18 @@ int main() {
 		// Handle guesses counting
 		count_guesses++;
 		if(count_guesses == 12) {
-			cout << -1 << endl;
+			cout << -1 << '\n';
 			cerr << "WA: guess limit exceeded" << endl;
 			break;
 		} else {
+			// If got it right, print and terminate program
+			if(seq[guess] == seq[pos]) {
+				cout << seq[guess] << '\n';
+				cout << "SUCCESS" << endl;
+				break;
+			}
 			cout << seq[guess] << endl;
 		}
-
-		// If got it right, terminate judge program
-		if(seq[guess] == seq[pos]) break; 
 	}
+	cout << "Closing JUDGE" << endl;
 }

@@ -37,4 +37,6 @@ int main() {
 			hi = mid-1;
 		}
 	}
+
+	cout << "Closing SOLUTION" << endl;
 }
