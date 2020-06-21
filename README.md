@@ -13,12 +13,14 @@ Check the examples to see how they work. (Run `make example`)
 You can run the interactor in two modes, for different purposes:
 
 1. Fast mode
+
 	Default, run without any options. This can be used for the purposes of calculating worst-case time or running exhaustively to look for the reason of WA.
+
 2. Step-by-step mode
+
 	Run with the option flag `--verbose` or `-v`. In this mode, what the solution and the judge print will be logged to the output slowly, step-by-step. This can be used for debugging.
 
-Hint: if you use cerr in the judge program (or solution program) you can also debug some stuff and use the Fast mode. The examples only use to print if you got WA or AC, but you can also print intermediate steps and calculate the duration of some piece of your solution.
-	
+Hint: if you use `stderr` in the judge program (or solution program) you can also debug some stuff and use the Fast mode. The examples only use to print if you got WA or AC, but you can also print intermediate steps and calculate the duration of some piece of your solution.	
 
 Bibliography:
 
