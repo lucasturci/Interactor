@@ -1,6 +1,6 @@
 # Interactor
 
-A program to test solutions of interactive problems.
+A program to test solutions of interactive competitive programming problems.
 
 ## How to use
 
